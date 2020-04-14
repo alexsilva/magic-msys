@@ -1,3 +1,4 @@
+# coding: utf-8
 import os
 import re
 
@@ -5,7 +6,7 @@ import sys
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-python_dir = os.path.dirname(sys.executable)
+python_dir = sys.base_prefix
 
 magic_dirpath = os.path.join(python_dir, 'magic')
 
