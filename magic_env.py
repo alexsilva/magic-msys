@@ -1,20 +1,22 @@
 # coding: utf-8
 import os
-import re
 
+import pathlib
 import sys
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
+script_dir = pathlib.Path(os.path.abspath(__file__)).parent
 
 python_dir = sys.base_prefix
 
-magic_dirpath = os.path.join(python_dir, 'magic')
+magic_dir = pathlib.Path(python_dir, 'magic')
 
-# is virtualenv and installed ?
-if not os.path.isdir(magic_dirpath) and bool(re.match(".*Scripts", python_dir, re.I)):
-    magic_dirpath = os.path.join(os.path.dirname(os.path.dirname(script_dir)), "magic")  # Lib\\site-packages
-    if not os.path.isdir(magic_dirpath):
-        magic_dirpath = os.path.join(script_dir, "magic")
+if not magic_dir.is_dir():
+    # in virtualenv path (external python)
+    if hasattr(sys, 'real_prefix'):
+        magic_dir = pathlib.Path(sys.real_prefix, "magic")
+    # this is script path
+    if not magic_dir.is_dir():
+        magic_dir = script_dir.joinpath('magic')
 
 _setup_loaded = False
 
@@ -24,6 +26,6 @@ def setup():
     global _setup_loaded
     if _setup_loaded:
         return
-    os.environ['PATH'] = magic_dirpath + os.pathsep + os.environ['PATH']
-    os.environ['MAGIC'] = os.path.join(magic_dirpath, 'magic.mgc')
+    os.environ['PATH'] = os.pathsep.join([os.environ['PATH'], str(magic_dir)])
+    os.environ['MAGIC'] = str(magic_dir.joinpath('magic.mgc'))
     _setup_loaded = True
