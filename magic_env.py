@@ -1,8 +1,11 @@
 # coding: utf-8
 import os
-
-import pathlib
 import sys
+
+try:
+    import pathlib
+except ImportError:
+    import pathlib2 as pathlib
 
 script_dir = pathlib.Path(os.path.abspath(__file__)).parent
 
