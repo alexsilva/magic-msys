@@ -7,7 +7,7 @@ magic_dir = os.path.join(base_dir, 'magic')
 
 setup(
     name='magic-msys-bin',
-    version='1.4',
+    version='1.5',
     py_modules=['magic_env'],
     url='https://github.com/alexsilva/magic-msys-bin',
     scripts=[],
